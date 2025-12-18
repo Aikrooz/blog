@@ -13,7 +13,7 @@ class PublishedManager(models.Manager):
     def get_queryset(self)
         return super().get_queryset().filter(status="publised")
 
-class Post(models.Model):
+class PostModel(models.Model):
    
     title = models.CharField(max_length=250)#title
     slug = models.SlugField(max_length=250,
@@ -33,3 +33,4 @@ class Post(models.Model):
     drafts = DraftManager()
     class Meta:
         ordering = ('-publish',)
+
