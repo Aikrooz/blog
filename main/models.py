@@ -6,6 +6,13 @@ STATUS=[
     ("Published","Published")
 ]
 
+class DraftManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status="draft")
+class PublishedManager(models.Manager):
+    def get_queryset(self)
+        return super().get_queryset().filter(status="publised")
+
 class Post(models.Model):
    
     title = models.CharField(max_length=250)#title
@@ -21,5 +28,8 @@ class Post(models.Model):
     status = models.CharField(max_length=10,
                               choices=STATUS,
                               default='draft')
+    objects = models.Manager()      # default manager
+    published = PublishedManager()  # custom manager for published posts
+    drafts = DraftManager()
     class Meta:
         ordering = ('-publish',)
