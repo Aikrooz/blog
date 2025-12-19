@@ -6,8 +6,12 @@ from .models import PostModel
 class PostView(ListView):
     model=PostModel
     template_name="posts.html"
-    context_object_name="post"
-    queryset=Post.published.all()
+    context_object_name="posts"
+    queryset=PostModel.objects.all()
+    paginate_by=5
 
-
-
+class PostDetailView(DetailView):
+    model=PostModel
+    template_name="post_detail.html"
+    context_object_name="posts"
+    

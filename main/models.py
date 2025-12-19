@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from  django.utils import timezone
+from django.urls import reverse
 STATUS=[
     ("Draft","Draft"),
     ("Published","Published")
@@ -8,10 +9,10 @@ STATUS=[
 
 class DraftManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(status="draft")
+        return super().get_queryset().filter(status="Draft")
 class PublishedManager(models.Manager):
-    def get_queryset(self)
-        return super().get_queryset().filter(status="publised")
+    def get_queryset(self):
+        return super().get_queryset().filter(status="Published")
 
 class PostModel(models.Model):
    
@@ -27,10 +28,29 @@ class PostModel(models.Model):
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10,
                               choices=STATUS,
-                              default='draft')
+                              default='Draft')
     objects = models.Manager()      # default manager
     published = PublishedManager()  # custom manager for published posts
     drafts = DraftManager()
     class Meta:
         ordering = ('-publish',)
 
+    def get_unique_url(self):
+        return reverse(
+            'blog:post_detail',#blog shows refers to the url page and post_detail is the url name,
+            args=[
+                self.publish.year,
+                self.publish.month,
+                self.publish.day,
+                self.slug
+            ]
+        )
+
+
+"""
+A slug is a url version of a title or topic
+
+unique_for_date: Means that a slugname cannot have the same data
+
+The reverse ()function helps us to build the urls automatically
+"""
